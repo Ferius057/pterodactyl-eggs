@@ -14,6 +14,7 @@
 ![](https://i.imgur.com/wCC3Whu.jpg)
 3. Далее делаем всё как показано на скрине
 ![](https://i.imgur.com/qQrgHK5.jpg)
+4. Перезагружаем демон панели командой ```systemctl restart wings```
 
 ## Использование
 
