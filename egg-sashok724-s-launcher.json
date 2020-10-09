@@ -1,0 +1,26 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v1"
+    },
+    "exported_at": "2020-10-09T12:46:24+03:00",
+    "name": "sashok724's Launcher",
+    "author": "alexxxlyt@yandex.ru",
+    "description": "\u041a\u0430\u0441\u0442\u043e\u043c\u043d\u044b\u0439 \u043b\u0430\u0443\u043d\u0447\u0435\u0440 Minecraft \u043e\u0442 sashok724.",
+    "image": "quay.io\/pterodactyl\/core:java",
+    "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -Dterminal.jline=false -Dterminal.ansi=true -jar LaunchServer.jar",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Server socket thread successfully started\",\r\n    \"userInteraction\": []\r\n}",
+        "logs": "{}",
+        "stop": "stop"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/sh\r\napk update\r\napk add curl\r\napk add tar\r\n\r\ncd \/mnt\/server\r\n\r\nset -e\r\n\r\nreadonly DOWNLOAD_URL=\"https:\/\/launcher.sashok724.net\/download\"\r\nreadonly LIBRARIES_DIR=\"libraries\"\r\nreadonly UPDATES_DIR=\"updates\"\r\nreadonly JRE_VERSION=\"8u202\"\r\n\r\n# Create dirs\r\nmkdir -p $LIBRARIES_DIR $LIBRARIES_DIR\/hikaricp $UPDATES_DIR\r\n\r\n# Download LaunchServer\r\necho \"Downloading LaunchServer.jar\"\r\ncurl -o LaunchServer.jar $DOWNLOAD_URL\/LaunchServer.jar\r\n\r\n# Download JAnsi\r\necho \"Downloading JAnsi (Colored console support)\"\r\nif [ ! -f $LIBRARIES_DIR\/jansi.jar ]; then\r\n\tcurl -o $LIBRARIES_DIR\/jansi.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/jansi.jar\r\nfi\r\n\r\n# Download JLine2\r\necho \"Downloading JLine2 (Better console support)\"\r\nif [ ! -f $LIBRARIES_DIR\/jline2.jar ]; then\r\n\tcurl -o $LIBRARIES_DIR\/jline2.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/jline2.jar\r\nfi\r\n\r\n# Download HikariCP\r\necho \"Downloading HikariCP (JDBC connection pooling)\"\r\nif [ ! -f $LIBRARIES_DIR\/hikaricp\/hikaricp.jar ]; then\r\n\tcurl -o $LIBRARIES_DIR\/hikaricp\/hikaricp.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/hikaricp\/hikaricp.jar\r\n\tcurl -o $LIBRARIES_DIR\/hikaricp\/javassist.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/hikaricp\/javassist.jar\r\n\tcurl -o $LIBRARIES_DIR\/hikaricp\/slf4j-api.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/hikaricp\/slf4j-api.jar\r\n\tcurl -o $LIBRARIES_DIR\/hikaricp\/slf4j-simple.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/hikaricp\/slf4j-simple.jar\r\nfi\r\n\r\n# Download MySQL\r\necho \"Downloading MySQL Connector (Authentication support)\"\r\nif [ ! -f $LIBRARIES_DIR\/mysql.jar ]; then\r\n\tcurl -o $LIBRARIES_DIR\/mysql.jar $DOWNLOAD_URL\/$LIBRARIES_DIR\/mysql.jar\r\nfi\r\n\r\n# Download Launch4J\r\necho \"Downloading Launch4J (EXE binary building support)\"\r\nif [ ! -d $LIBRARIES_DIR\/launch4j ]; then\r\n\tif [ \"$(uname)\" == \"Darwin\" ]; then\r\n\t\tcurl -o $LIBRARIES_DIR\/launch4j.tar.gz $DOWNLOAD_URL\/$LIBRARIES_DIR\/launch4j-osx.tar.gz\r\n\telse\r\n\t\tcurl -o $LIBRARIES_DIR\/launch4j.tar.gz $DOWNLOAD_URL\/$LIBRARIES_DIR\/launch4j.tar.gz\r\n\tfi\r\n\ttar -xf $LIBRARIES_DIR\/launch4j.tar.gz -C $LIBRARIES_DIR\r\n\tchmod -R +x $LIBRARIES_DIR\/launch4j\/bin\r\n\trm $LIBRARIES_DIR\/launch4j.tar.gz\r\nfi\r\n\r\n# Download JVMs\r\necho \"Downloading Java $JRE_VERSION JVMs\"\r\nif [ ! -d $UPDATES_DIR\/jre-$JRE_VERSION-win32 ] || [ ! -d $UPDATES_DIR\/jre-$JRE_VERSION-win64 ] || [ ! -d $UPDATES_DIR\/jre-$JRE_VERSION-linux32 ] || [ ! -d $UPDATES_DIR\/jre-$JRE_VERSION-linux64 ] || [ ! -d $UPDATES_DIR\/jre-$JRE_VERSION-macosx ]; then\r\n\tcurl -o $UPDATES_DIR\/jre.tar.gz $DOWNLOAD_URL\/jre-$JRE_VERSION.tar.gz\r\n\ttar --warning=no-unknown-keyword -xf $UPDATES_DIR\/jre.tar.gz -C $UPDATES_DIR\r\n\trm $UPDATES_DIR\/jre.tar.gz\r\nfi\r\n\r\n# Ready to use!\r\necho \"Ready to use!\"",
+            "container": "alpine:3.9",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": []
+}
